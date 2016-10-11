@@ -114,13 +114,58 @@ describe("About Applying What We Have Learnt", function() {
 
   /*********************************************************************************/
   /* UNCOMMENT FOR EXTRA CREDIT */
-  /*
+  /* I take a range of numbers from 50 to 0 and I'll loop throught this numbser and
+  make a modulo of my number to find the largest which is aslo a prime number */
   it("should find the largest prime factor of a composite number", function () {
+    function largestFactor(number) {
+      return _.chain(number)
+        .range()
+        .reverse()
+        .find(function(factor) {
+          return number % factor == 0 && checkFactorPrime(factor);
+        })
+        .value();
+    };
+    function checkFactorPrime(factor) {
+      return _.chain(factor)
+        .range()
+        .reverse()
+        .without(0, 1)
+        .every(function(number) {
+          return factor % number != 0;
+        })
+        .value();
+    };
+    expect(largestFactor(51)).toBe(17);
+    expect(largestFactor(119)).toBe(17);
+    expect(largestFactor(63)).toBe(7);
+    expect(largestFactor(125)).toBe(5);
+    expect(largestFactor(64)).toBe(2);
 
+    /* I'm looking forward to the lowest number which return 0 in modulo.
+    Result of the division is number which I looking.
+    szukam najmniejszej liczby przez którą dzieli się bez reszty,
+    więc wynik to liczba której szukam*/
+    function lowestFactor(number){
+      var lowestDivider = _.chain(number)
+        .range()
+        .without(0, 1)
+        .find(function(divider) {
+          var reminder = number % divider
+          return reminder === 0 && checkFactorPrime(number / divider);
+        })
+        .value();
+      return number / lowestDivider;
+    };
+
+    expect(lowestFactor(51)).toBe(17);
+    expect(lowestFactor(119)).toBe(17);
+    expect(lowestFactor(64)).toBe(2);
   });
 
-  it("should find the largest palindrome made from the product of two 3 digit numbers", function () {
 
+  /*
+  it("should find the largest palindrome made from the product of two 3 digit numbers", function () {
   });
 
   it("should find the smallest number divisible by each of the numbers 1 to 20", function () {
